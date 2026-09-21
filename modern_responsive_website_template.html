@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aura — Modern Digital Solutions</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;1,400&family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: 'var(--brand-50, #eef2ff)',
+                            100: 'var(--brand-100, #e0e7ff)',
+                            500: 'var(--brand-500, #6366f1)',
+                            600: 'var(--brand-600, #4f46e5)',
+                            700: 'var(--brand-700, #4338ca)',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['var(--user-font-sans, "Inter")', 'sans-serif'],
+                        heading: ['var(--user-font-heading, "Outfit")', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Custom CSS Variables and Micro-animations -->
+    <style>
+        :root {
+            --brand-primary: #6366f1;
+            --brand-hover: #4f46e5;
+            --brand-light: #e0e7ff;
+            --user-font-sans: 'Inter', sans-serif;
+            --user-font-heading: 'Outfit', sans-serif;
+        }
+
+        body {
+            font-family: var(--user-font-sans);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        h1, h2, h3, h4, h5, h6, .font-heading {
+            font-family: var(--user-font-heading);
+        }
+
+        .dynamic-brand-bg {
+            background-color: var(--brand-primary) !important;
+        }
+
+        .dynamic-brand-text {
+            color: var(--brand-primary) !important;
+        }
+
+        .dynamic-brand-border {
+            border-color: var(--brand-primary) !important;
+        }
+
+        /* Glassmorphism utility */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .dark .glass-panel {
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        /* Gradient accent text */
+        .gradient-text {
+            background: linear-gradient(135deg, var(--brand-primary) 0%, #a855f7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Floating animation */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        .animate-float {
+            animation: float 4s ease-in-out infinite;
+        }
+
+        /* Pulse aura */
+        @keyframes pulse-glow {
+            0%, 100% { opacity: 0.4; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.08); }
+        }
+        .animate-pulse-glow {
+            animation: pulse-glow 6s ease-in-out infinite;
+        }
+
+        /* Active navigation link indicator */
+        .nav-link.active {
+            color: var(--brand-primary);
+            font-weight: 600;
+        }
+        .nav-link.active::after {
+            content: '';
+            display: block;
+            width: 100%;
+            height: 2px;
+            background-color: var(--brand-primary);
+            margin-top: 2px;
+            border-radius: 99px;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col antialiased selection:bg-indigo-500 selection:text-white">
+
+    <!-- Navigation Bar -->
+    <header id="main-header" class="sticky top-0 z-40 w-full glass-panel transition-all duration-300 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <!-- Brand Logo -->
+            <a href="#hero" class="flex items-center gap-3 group">
+                <div class="w-10 h-10 rounded-xl dynamic-brand-bg text-white flex items-center justify-center font-bold text-xl shadow-lg shadow-indigo-500/30 group-hover:scale-105 transition-transform duration-300">
+                    <i class="fa-solid fa-cube"></i>
+                </div>
+                <span class="text-2xl font-bold font-heading tracking-tight text-slate-900 dark:text-white" id="brand-name-display">Aura</span>
+            </a>
+
+            <!-- Desktop Navigation Links -->
+            <nav class="hidden md:flex items-center gap-8 font-medium text-slate-600 dark:text-slate-300 text-sm">
+                <a href="#hero" class="nav-link transition-colors hover:text-slate-900 dark:hover:text-white py-1">Home</a>
+                <a href="#about" class="nav-link transition-colors hover:text-slate-900 dark:hover:text-white py-1">About</a>
+                <a href="#features" class="nav-link transition-colors hover:text-slate-900 dark:hover:text-white py-1">Features</a>
+                <a href="#services" class="nav-link transition-colors hover:text-slate-900 dark:hover:text-white py-1">Services</a>
+                <a href="#contact" class="nav-link transition-colors hover:text-slate-900 dark:hover:text-white py-1">Contact</a>
+            </nav>
+
+            <!-- Action Controls & Theme Switcher -->
+            <div class="hidden md:flex items-center gap-4">
+                <!-- Theme Toggle Button -->
+                <button id="theme-toggle" aria-label="Toggle dark theme" class="p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                    <i class="fa-solid fa-moon dark:hidden text-lg"></i>
+                    <i class="fa-solid fa-sun hidden dark:block text-amber-400 text-lg"></i>
+                </button>
+
+                <!-- Customizer Launcher Button -->
+                <button id="open-customizer-btn" class="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold text-slate-700 dark:text-slate-200 bg-slate-200/60 dark:bg-slate-800/80 hover:bg-slate-200 dark:hover:bg-slate-800 transition-all border border-slate-300/50 dark:border-slate-700/50">
+                    <i class="fa-solid fa-wand-magic-sparkles text-amber-500"></i>
+                    <span>Customize & Export</span>
+                </button>
+
+                <!-- Get Started CTA -->
+                <a href="#contact" class="px-5 py-2.5 rounded-xl text-sm font-semibold text-white dynamic-brand-bg hover:opacity-90 transition-all shadow-md shadow-indigo-500/20 hover:shadow-indigo-500/40">
+                    Get Started
+                </a>
+            </div>
+
+            <!-- Mobile Hamburger Button -->
+            <div class="flex items-center gap-2 md:hidden">
+                <button id="theme-toggle-mobile" aria-label="Toggle theme" class="p-2 rounded-lg text-slate-600 dark:text-slate-300">
+                    <i class="fa-solid fa-moon dark:hidden"></i>
+                    <i class="fa-solid fa-sun hidden dark:block text-amber-400"></i>
+                </button>
+                <button id="mobile-menu-btn" aria-label="Open menu" class="p-2 rounded-lg text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Dropdown Menu -->
+        <div id="mobile-menu" class="hidden md:hidden border-b border-slate-200 dark:border-slate-800 bg-slate-50/95 dark:bg-slate-950/95 backdrop-blur-lg px-4 pt-2 pb-6 space-y-3">
+            <a href="#hero" class="mobile-nav-link block px-3 py-2 rounded-lg text-base font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-900">Home</a>
+            <a href="#about" class="mobile-nav-link block px-3 py-2 rounded-lg text-base font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-900">About</a>
+            <a href="#features" class="mobile-nav-link block px-3 py-2 rounded-lg text-base font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-900">Features</a>
+            <a href="#services" class="mobile-nav-link block px-3 py-2 rounded-lg text-base font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-900">Services</a>
+            <a href="#contact" class="mobile-nav-link block px-3 py-2 rounded-lg text-base font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-900">Contact</a>
+            
+            <div class="pt-4 flex flex-col gap-2">
+                <button id="open-customizer-btn-mobile" class="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold text-slate-800 dark:text-slate-100 bg-slate-200 dark:bg-slate-800">
+                    <i class="fa-solid fa-wand-magic-sparkles text-amber-500"></i>
+                    <span>Customize & Export Tool</span>
+                </button>
+                <a href="#contact" class="w-full text-center px-4 py-2.5 rounded-xl text-sm font-semibold text-white dynamic-brand-bg">
+                    Get Started Now
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow">
+        <!-- Hero Section -->
+        <section id="hero" class="relative pt-12 pb-20 md:pt-24 md:pb-32 overflow-hidden">
+            <!-- Background Glow Effects -->
+            <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full dynamic-brand-bg opacity-20 blur-[120px] pointer-events-none animate-pulse-glow"></div>
+            <div class="absolute top-1/3 right-10 w-72 h-72 rounded-full bg-purple-500 opacity-15 blur-[100px] pointer-events-none"></div>
+
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="text-center max-w-3xl mx-auto space-y-6">
+                    <!-- Badge -->
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider bg-slate-200/80 dark:bg-slate-800/80 border border-slate-300/50 dark:border-slate-700/50 text-slate-800 dark:text-slate-200 shadow-sm backdrop-blur-md">
+                        <span class="w-2 h-2 rounded-full dynamic-brand-bg animate-ping"></span>
+                        <span id="hero-badge-text">Next Generation Web Platform</span>
+                    </div>
+
+                    <!-- Main Editable Title -->
+                    <h1 id="hero-title-display" class="text-4xl sm:text-6xl md:text-7xl font-extrabold font-heading tracking-tight leading-[1.1] text-slate-900 dark:text-white">
+                        Build Stunning Websites <span class="gradient-text">Effortlessly</span>
+                    </h1>
+
+                    <!-- Main Editable Subtitle -->
+                    <p id="hero-subtitle-display" class="text-lg sm:text-xl text-slate-600 dark:text-slate-300 font-normal max-w-2xl mx-auto leading-relaxed">
+                        A modern, fully responsive, and customizable single-page template designed to elevate your brand presence and captivate your audience immediately.
+                    </p>
+
+                    <!-- CTAs -->
+                    <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+                        <a href="#contact" class="w-full sm:w-auto px-8 py-4 rounded-xl text-base font-bold text-white dynamic-brand-bg hover:opacity-90 shadow-xl shadow-indigo-500/25 transition-all transform hover:-translate-y-0.5 flex items-center justify-center gap-2">
+                            <span>Get Started Free</span>
+                            <i class="fa-solid fa-arrow-right text-sm"></i>
+                        </a>
+                        <a href="#features" class="w-full sm:w-auto px-8 py-4 rounded-xl text-base font-semibold text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/80 transition-all flex items-center justify-center gap-2 shadow-sm">
+                            <i class="fa-regular fa-circle-play text-indigo-500"></i>
+                            <span>Explore Features</span>
+                        </a>
+                    </div>
+
+                    <!-- Social Proof / Stats Pill -->
+                    <div class="pt-10 flex flex-wrap items-center justify-center gap-8 text-slate-500 dark:text-slate-400 text-sm font-medium">
+                        <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-circle-check text-emerald-500"></i>
+                            <span>No Dependencies Needed</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-circle-check text-emerald-500"></i>
+                            <span>Instant Live Export</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-circle-check text-emerald-500"></i>
+                            <span>100% Fully Responsive</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hero Graphic / Mockup Card -->
+                <div class="mt-14 max-w-5xl mx-auto relative">
+                    <div class="p-3 sm:p-4 rounded-2xl bg-slate-200/50 dark:bg-slate-900/50 border border-slate-300/60 dark:border-slate-800 backdrop-blur-xl shadow-2xl">
+                        <div class="rounded-xl overflow-hidden bg-slate-900 border border-slate-800 aspect-video relative flex flex-col justify-between p-6 sm:p-10 text-white">
+                            <!-- Fake Window Header -->
+                            <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-3 h-3 rounded-full bg-rose-500"></span>
+                                    <span class="w-3 h-3 rounded-full bg-amber-500"></span>
+                                    <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
+                                </div>
+                                <div class="text-xs font-mono text-slate-500 bg-slate-950 px-3 py-1 rounded-md border border-slate-800">
+                                    https://aura-template.preview
+                                </div>
+                                <div class="text-slate-500"><i class="fa-solid fa-shield-halved text-xs"></i></div>
+                            </div>
+
+                            <!-- Mock Content -->
+                            <div class="my-auto grid grid-cols-1 md:grid-cols-3 gap-6 py-6">
+                                <div class="p-4 rounded-xl bg-slate-800/60 border border-slate-700/50 space-y-2">
+                                    <div class="w-8 h-8 rounded-lg dynamic-brand-bg flex items-center justify-center text-sm font-bold"><i class="fa-solid fa-bolt"></i></div>
+                                    <h4 class="font-bold text-slate-100">Lightning Fast</h4>
+                                    <p class="text-xs text-slate-400">Optimized performance for ultra-fast loading speed across all devices.</p>
+                                </div>
+                                <div class="p-4 rounded-xl bg-slate-800/60 border border-slate-700/50 space-y-2">
+                                    <div class="w-8 h-8 rounded-lg bg-purple-600 flex items-center justify-center text-sm font-bold"><i class="fa-solid fa-sliders"></i></div>
+                                    <h4 class="font-bold text-slate-100">Live Customizer</h4>
+                                    <p class="text-xs text-slate-400">Tweak colors and copy in real-time and export production HTML.</p>
+                                </div>
+                                <div class="p-4 rounded-xl bg-slate-800/60 border border-slate-700/50 space-y-2">
+                                    <div class="w-8 h-8 rounded-lg bg-emerald-600 flex items-center justify-center text-sm font-bold"><i class="fa-solid fa-mobile-screen"></i></div>
+                                    <h4 class="font-bold text-slate-100">Mobile Ready</h4>
+                                    <p class="text-xs text-slate-400">Flawless design layout crafted specifically for mobile and desktop screens.</p>
+                                </div>
+                            </div>
+
+                            <!-- Decorative Floating Elements -->
+                            <div class="hidden sm:flex items-center justify-between text-xs text-slate-500 border-t border-slate-800/80 pt-3">
+                                <span>Status: <strong class="text-emerald-400 font-semibold">Active & Ready</strong></span>
+                                <span>Tailwind CSS & CSS Variables</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Us Section -->
+        <section id="about" class="py-20 bg-slate-100/70 dark:bg-slate-900/40 border-y border-slate-200/80 dark:border-slate-800/80">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+                    <!-- Left Column: Visual graphic -->
+                    <div class="relative">
+                        <div class="relative z-10 rounded-2xl overflow-hidden shadow-2xl bg-slate-900 p-8 border border-slate-800 text-white space-y-6">
+                            <div class="inline-block px-3 py-1 rounded-md text-xs font-mono dynamic-brand-bg text-white">About Our Platform</div>
+                            <h3 class="text-2xl sm:text-3xl font-bold font-heading">Crafting Exceptional Web Experiences with Elegance</h3>
+                            <p class="text-slate-300 text-sm leading-relaxed">
+                                We believe web development should be effortless, expressive, and accessible. Our platform empowers designers, developers, and businesses to deploy pristine single-page experiences without technical clutter.
+                            </p>
+                            
+                            <!-- Key Metrics Grid -->
+                            <div class="grid grid-cols-2 gap-4 pt-4 border-t border-slate-800">
+                                <div>
+                                    <div class="text-3xl font-extrabold font-heading dynamic-brand-text">99.9%</div>
+                                    <div class="text-xs text-slate-400 font-medium mt-1">Uptime & Reliability</div>
+                                </div>
+                                <div>
+                                    <div class="text-3xl font-extrabold font-heading text-purple-400">10x</div>
+                                    <div class="text-xs text-slate-400 font-medium mt-1">Faster Deployment</div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Background offset card -->
+                        <div class="absolute -bottom-4 -right-4 w-full h-full rounded-2xl dynamic-brand-bg opacity-30 -z-0"></div>
+                    </div>
+
+                    <!-- Right Column: Story & Features List -->
+                    <div class="space-y-6">
+                        <div class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider dynamic-brand-text">
+                            <i class="fa-solid fa-sparkles"></i>
+                            <span>Who We Are</span>
+                        </div>
+                        <h2 class="text-3xl sm:text-4xl font-extrabold font-heading text-slate-900 dark:text-white">
+                            Empowering creators to showcase their best work.
+                        </h2>
+                        <p class="text-slate-600 dark:text-slate-300 leading-relaxed">
+                            Whether you're launching a new startup, presenting a personal portfolio, or creating a product landing page, our architecture gives you the speed and visual quality you need.
+                        </p>
+
+                        <!-- Feature Checklist -->
+                        <div class="space-y-4 pt-2">
+                            <div class="flex items-start gap-4">
+                                <div class="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-500 flex items-center justify-center shrink-0 mt-1">
+                                    <i class="fa-solid fa-check text-sm"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-slate-900 dark:text-white">Semantic & Accessible Markup</h4>
+                                    <p class="text-sm text-slate-500 dark:text-slate-400">Built following web standard best practices for accessibility and SEO optimization.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <div class="w-8 h-8 rounded-lg dynamic-brand-bg/10 dynamic-brand-text flex items-center justify-center shrink-0 mt-1">
+                                    <i class="fa-solid fa-palette text-sm"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-slate-900 dark:text-white">Live CSS Variable Theming</h4>
+                                    <p class="text-sm text-slate-500 dark:text-slate-400">Change colors and typography on the fly with real-time UI synchronization.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <div class="w-8 h-8 rounded-lg bg-purple-500/10 text-purple-500 flex items-center justify-center shrink-0 mt-1">
+                                    <i class="fa-solid fa-download text-sm"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-slate-900 dark:text-white">One-Click Single File Export</h4>
+                                    <p class="text-sm text-slate-500 dark:text-slate-400">Download your entire customized website as a self-contained HTML file anytime.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features & Services Grid Section -->
+        <section id="features" class="py-20 md:py-28">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <!-- Section Header -->
+                <div class="text-center max-w-2xl mx-auto space-y-4 mb-16">
+                    <div class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider dynamic-brand-text">
+                        <i class="fa-solid fa-layer-group"></i>
+                        <span>Features & Capabilities</span>
+                    </div>
+                    <h2 class="text-3xl sm:text-5xl font-extrabold font-heading text-slate-900 dark:text-white">
+                        Everything You Need To Stand Out
+                    </h2>
+                    <p class="text-slate-600 dark:text-slate-400">
+                        Carefully engineered tools and components designed to make your web presence powerful and effortless.
+                    </p>
+                </div>
+
+                <!-- Cards Grid -->
+                <div id="services" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Feature Card 1 -->
+                    <div class="p-8 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-lg shadow-slate-200/50 dark:shadow-none hover:border-indigo-500/50 dark:hover:border-indigo-500/50 transition-all duration-300 group hover:-translate-y-1">
+                        <div class="w-12 h-12 rounded-xl dynamic-brand-bg text-white flex items-center justify-center text-xl shadow-md shadow-indigo-500/30 group-hover:scale-110 transition-transform mb-6">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        </div>
+                        <h3 class="text-xl font-bold font-heading text-slate-900 dark:text-white mb-2">Live Theme Customizer</h3>
+                        <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-4">
+                            Adjust accent colors, brand titles, and typography directly inside your browser with live DOM preview updates.
+                        </p>
+                        <span class="inline-flex items-center gap-1 text-xs font-semibold dynamic-brand-text">
+                            Interactive Tool <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                        </span>
+                    </div>
+
+                    <!-- Feature Card 2 -->
+                    <div class="p-8 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-lg shadow-slate-200/50 dark:shadow-none hover:border-indigo-500/50 dark:hover:border-indigo-500/50 transition-all duration-300 group hover:-translate-y-1">
+                        <div class="w-12 h-12 rounded-xl bg-purple-600 text-white flex items-center justify-center text-xl shadow-md shadow-purple-500/30 group-hover:scale-110 transition-transform mb-6">
+                            <i class="fa-solid fa-moon"></i>
+                        </div>
+                        <h3 class="text-xl font-bold font-heading text-slate-900 dark:text-white mb-2">Adaptive Dark Mode</h3>
+                        <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-4">
+                            Seamless toggle between dark and light themes with automatic system preference detection and localStorage persistence.
+                        </p>
+                        <span class="inline-flex items-center gap-1 text-xs font-semibold text-purple-500">
+                            Built-in Persistence <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                        </span>
+                    </div>
+
+                    <!-- Feature Card 3 -->
+                    <div class="p-8 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-lg shadow-slate-200/50 dark:shadow-none hover:border-indigo-500/50 dark:hover:border-indigo-500/50 transition-all duration-300 group hover:-translate-y-1">
+                        <div class="w-12 h-12 rounded-xl bg-emerald-600 text-white flex items-center justify-center text-xl shadow-md shadow-emerald-500/30 group-hover:scale-110 transition-transform mb-6">
+                            <i class="fa-solid fa-paper-plane"></i>
+                        </div>
+                        <h3 class="text-xl font-bold font-heading text-slate-900 dark:text-white mb-2">Interactive Contact Form</h3>
+                        <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-4">
+                            Real-time input validation, custom error indicators, and a graceful interactive success modal.
+                        </p>
+                        <span class="inline-flex items-center gap-1 text-xs font-semibold text-emerald-500">
+                            Instant Feedback <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                        </span>
+                    </div>
+
+                    <!-- Feature Card 4 -->
+                    <div class="p-8 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-lg shadow-slate-200/50 dark:shadow-none hover:border-indigo-500/50 dark:hover:border-indigo-500/50 transition-all duration-300 group hover:-translate-y-1">
+                        <div class="w-12 h-12 rounded-xl bg-amber-500 text-white flex items-center justify-center text-xl shadow-md shadow-amber-500/30 group-hover:scale-110 transition-transform mb-6">
+                            <i class="fa-solid fa-mobile-screen-button"></i>
+                        </div>
+                        <h3 class="text-xl font-bold font-heading text-slate-900 dark:text-white mb-2">100% Mobile Responsive</h3>
+                        <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-4">
+                            Fluid layouts, touch-friendly controls, and a smooth navigation drawer tailored for all viewport sizes.
+                        </p>
+                        <span class="inline-flex items-center gap-1 text-xs font-semibold text-amber-500">
+                            Fluid Viewport <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                        </span>
+                    </div>
+
+                    <!-- Feature Card 5 -->
+                    <div class="p-8 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-lg shadow-slate-200/50 dark:shadow-none hover:border-indigo-500/50 dark:hover:border-indigo-500/50 transition-all duration-300 group hover:-translate-y-1">
+                        <div class="w-12 h-12 rounded-xl bg-rose-600 text-white flex items-center justify-center text-xl shadow-md shadow-rose-500/30 group-hover:scale-110 transition-transform mb-6">
+                            <i class="fa-solid fa-download"></i>
+                        </div>
+                        <h3 class="text-xl font-bold font-heading text-slate-900 dark:text-white mb-2">One-Click HTML Export</h3>
+                        <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-4">
+                            Export your custom state into a clean single HTML file ready to host on GitHub Pages, Netlify, or Vercel.
+                        </p>
+                        <span class="inline-flex items-center gap-1 text-xs font-semibold text-rose-500">
+                            No Build Tools Needed <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                        </span>
+                    </div>
+
+                    <!-- Feature Card 6 -->
+                    <div class="p-8 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-lg shadow-slate-200/50 dark:shadow-none hover:border-indigo-500/50 dark:hover:border-indigo-500/50 transition-all duration-300 group hover:-translate-y-1">
+                        <div class="w-12 h-12 rounded-xl bg-cyan-600 text-white flex items-center justify-center text-xl shadow-md shadow-cyan-500/30 group-hover:scale-110 transition-transform mb-6">
+                            <i class="fa-solid fa-gauge-high"></i>
+                        </div>
+                        <h3 class="text-xl font-bold font-heading text-slate-900 dark:text-white mb-2">Ultra Lightweight</h3>
+                        <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-4">
+                            Zero heavy dependencies. Pure utility-first CSS and modern JavaScript for instant page loads.
+                        </p>
+                        <span class="inline-flex items-center gap-1 text-xs font-semibold text-cyan-500">
+                            High Performance <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Interactive Contact Section -->
+        <section id="contact" class="py-20 bg-slate-100/60 dark:bg-slate-900/40 border-t border-slate-200/80 dark:border-slate-800/80">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+                    
+                    <!-- Contact Info Panel -->
+                    <div class="lg:col-span-5 space-y-8">
+                        <div>
+                            <div class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider dynamic-brand-text mb-2">
+                                <i class="fa-solid fa-envelope"></i>
+                                <span>Get In Touch</span>
+                            </div>
+                            <h2 class="text-3xl sm:text-4xl font-extrabold font-heading text-slate-900 dark:text-white">
+                                Let's Start a Conversation
+                            </h2>
+                            <p class="text-slate-600 dark:text-slate-400 mt-3">
+                                Have questions or want to collaborate? Send us a message and our team will get back to you within 24 hours.
+                            </p>
+                        </div>
+
+                        <div class="space-y-6">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center dynamic-brand-text text-lg shrink-0 shadow-sm">
+                                    <i class="fa-solid fa-location-dot"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-xs uppercase font-bold text-slate-400">Our Location</h4>
+                                    <p class="text-slate-800 dark:text-slate-200 font-medium">100 Innovation Way, San Francisco, CA</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center dynamic-brand-text text-lg shrink-0 shadow-sm">
+                                    <i class="fa-solid fa-envelope-open-text"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-xs uppercase font-bold text-slate-400">Email Us</h4>
+                                    <p class="text-slate-800 dark:text-slate-200 font-medium">hello@aura-template.com</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center dynamic-brand-text text-lg shrink-0 shadow-sm">
+                                    <i class="fa-solid fa-phone"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-xs uppercase font-bold text-slate-400">Call Us</h4>
+                                    <p class="text-slate-800 dark:text-slate-200 font-medium">+1 (555) 234-5678</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Social Links -->
+                        <div class="pt-4 border-t border-slate-200 dark:border-slate-800">
+                            <span class="text-xs uppercase font-bold text-slate-400 block mb-3">Connect With Us</span>
+                            <div class="flex items-center gap-3">
+                                <a href="#" aria-label="Twitter" class="w-10 h-10 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center text-slate-600 dark:text-slate-300 hover:text-indigo-500 dark:hover:text-indigo-400 transition-colors">
+                                    <i class="fa-brands fa-x-twitter"></i>
+                                </a>
+                                <a href="#" aria-label="GitHub" class="w-10 h-10 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center text-slate-600 dark:text-slate-300 hover:text-indigo-500 dark:hover:text-indigo-400 transition-colors">
+                                    <i class="fa-brands fa-github"></i>
+                                </a>
+                                <a href="#" aria-label="LinkedIn" class="w-10 h-10 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center text-slate-600 dark:text-slate-300 hover:text-indigo-500 dark:hover:text-indigo-400 transition-colors">
+                                    <i class="fa-brands fa-linkedin-in"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Interactive Form Container -->
+                    <div class="lg:col-span-7">
+                        <div class="p-8 sm:p-10 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl">
+                            <form id="contact-form" class="space-y-6" novalidate>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                    <!-- Full Name Input -->
+                                    <div class="space-y-2">
+                                        <label for="form-name" class="block text-sm font-semibold text-slate-700 dark:text-slate-300">Your Name *</label>
+                                        <input type="text" id="form-name" placeholder="John Doe" required class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all">
+                                        <p id="err-name" class="hidden text-xs text-rose-500 font-medium">Please enter your name.</p>
+                                    </div>
+
+                                    <!-- Email Address Input -->
+                                    <div class="space-y-2">
+                                        <label for="form-email" class="block text-sm font-semibold text-slate-700 dark:text-slate-300">Your Email *</label>
+                                        <input type="email" id="form-email" placeholder="john@example.com" required class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all">
+                                        <p id="err-email" class="hidden text-xs text-rose-500 font-medium">Please enter a valid email address.</p>
+                                    </div>
+                                </div>
+
+                                <!-- Subject Input -->
+                                <div class="space-y-2">
+                                    <label for="form-subject" class="block text-sm font-semibold text-slate-700 dark:text-slate-300">Subject</label>
+                                    <input type="text" id="form-subject" placeholder="Project Inquiry / Feedback" class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all">
+                                </div>
+
+                                <!-- Message Input -->
+                                <div class="space-y-2">
+                                    <label for="form-message" class="block text-sm font-semibold text-slate-700 dark:text-slate-300">Your Message *</label>
+                                    <textarea id="form-message" rows="4" placeholder="Tell us how we can help you..." required class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all resize-none"></textarea>
+                                    <p id="err-message" class="hidden text-xs text-rose-500 font-medium">Please enter a message (at least 10 characters).</p>
+                                </div>
+
+                                <!-- Submit Button -->
+                                <button type="submit" class="w-full py-4 rounded-xl text-base font-bold text-white dynamic-brand-bg hover:opacity-90 shadow-lg shadow-indigo-500/25 transition-all flex items-center justify-center gap-2">
+                                    <i class="fa-solid fa-paper-plane text-sm"></i>
+                                    <span>Send Message</span>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="bg-slate-900 text-slate-400 border-t border-slate-800 pt-16 pb-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-10 pb-12 border-b border-slate-800">
+                <!-- Brand Column -->
+                <div class="space-y-4 md:col-span-1">
+                    <div class="flex items-center gap-3">
+                        <div class="w-9 h-9 rounded-xl dynamic-brand-bg text-white flex items-center justify-center font-bold text-lg">
+                            <i class="fa-solid fa-cube"></i>
+                        </div>
+                        <span class="text-xl font-bold font-heading text-white" id="footer-brand-name">Aura</span>
+                    </div>
+                    <p class="text-sm text-slate-400 leading-relaxed">
+                        A modern customizable website template designed for speed, flexibility, and stunning user experiences.
+                    </p>
+                </div>
+
+                <!-- Navigation Quick Links -->
+                <div>
+                    <h4 class="text-sm font-bold font-heading text-white uppercase tracking-wider mb-4">Navigation</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#hero" class="hover:text-white transition-colors">Home</a></li>
+                        <li><a href="#about" class="hover:text-white transition-colors">About Us</a></li>
+                        <li><a href="#features" class="hover:text-white transition-colors">Features</a></li>
+                        <li><a href="#services" class="hover:text-white transition-colors">Services</a></li>
+                    </ul>
+                </div>
+
+                <!-- Resources Links -->
+                <div>
+                    <h4 class="text-sm font-bold font-heading text-white uppercase tracking-wider mb-4">Resources</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#contact" class="hover:text-white transition-colors">Documentation</a></li>
+                        <li><a href="#contact" class="hover:text-white transition-colors">Help Center</a></li>
+                        <li><a href="#contact" class="hover:text-white transition-colors">Privacy Policy</a></li>
+                        <li><a href="#contact" class="hover:text-white transition-colors">Terms of Service</a></li>
+                    </ul>
+                </div>
+
+                <!-- Live Customizer Quick Launcher -->
+                <div class="space-y-3">
+                    <h4 class="text-sm font-bold font-heading text-white uppercase tracking-wider mb-4">Customize Site</h4>
+                    <p class="text-xs text-slate-400">Want to adapt this website for your brand?</p>
+                    <button id="footer-open-customizer" class="w-full px-4 py-2.5 rounded-xl text-xs font-semibold text-white bg-slate-800 hover:bg-slate-700 border border-slate-700 transition-colors flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-wand-magic-sparkles text-amber-400"></i>
+                        <span>Launch Customizer</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Bottom Copyright Bar -->
+            <div class="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-4">
+                <p>&copy; <span id="copyright-year"></span> Aura Template. All rights reserved.</p>
+                <p class="flex items-center gap-1">
+                    Made with <i class="fa-solid fa-heart text-rose-500"></i> for modern creators.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Customizer Side Drawer -->
+    <div id="customizer-drawer" class="fixed inset-y-0 right-0 z-50 w-full max-w-md bg-white dark:bg-slate-900 shadow-2xl border-l border-slate-200 dark:border-slate-800 transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col">
+        <!-- Drawer Header -->
+        <div class="p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50 dark:bg-slate-950">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-lg bg-amber-500/20 text-amber-500 flex items-center justify-center font-bold">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold font-heading text-slate-900 dark:text-white">Live Customizer & Export</h3>
+                    <p class="text-xs text-slate-500">Tweak styles and export your custom page</p>
+                </div>
+            </div>
+            <button id="close-customizer-btn" aria-label="Close drawer" class="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-white rounded-lg">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+        </div>
+
+        <!-- Drawer Body Controls -->
+        <div class="p-6 overflow-y-auto flex-grow space-y-6">
+            <!-- Brand Name Input -->
+            <div class="space-y-2">
+                <label for="input-brand-name" class="block text-xs font-bold uppercase tracking-wider text-slate-500">Brand Name</label>
+                <input type="text" id="input-brand-name" value="Aura" class="w-full px-3 py-2 rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            </div>
+
+            <!-- Hero Heading Input -->
+            <div class="space-y-2">
+                <label for="input-hero-title" class="block text-xs font-bold uppercase tracking-wider text-slate-500">Hero Main Title</label>
+                <input type="text" id="input-hero-title" value="Build Stunning Websites" class="w-full px-3 py-2 rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            </div>
+
+            <!-- Hero Subtitle Input -->
+            <div class="space-y-2">
+                <label for="input-hero-subtitle" class="block text-xs font-bold uppercase tracking-wider text-slate-500">Hero Subtitle</label>
+                <textarea id="input-hero-subtitle" rows="3" class="w-full px-3 py-2 rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none">A modern, fully responsive, and customizable single-page template designed to elevate your brand presence and captivate your audience immediately.</textarea>
+            </div>
+
+            <!-- Primary Accent Color Presets -->
+            <div class="space-y-3">
+                <label class="block text-xs font-bold uppercase tracking-wider text-slate-500">Accent Color Theme</label>
+                <div class="grid grid-cols-5 gap-3">
+                    <button data-color="#6366f1" class="color-preset-btn w-full aspect-square rounded-xl bg-indigo-500 border-2 border-white ring-2 ring-indigo-500/50 flex items-center justify-center text-white"><i class="fa-solid fa-check text-xs"></i></button>
+                    <button data-color="#06b6d4" class="color-preset-btn w-full aspect-square rounded-xl bg-cyan-500 border-2 border-transparent flex items-center justify-center text-white"></button>
+                    <button data-color="#10b981" class="color-preset-btn w-full aspect-square rounded-xl bg-emerald-500 border-2 border-transparent flex items-center justify-center text-white"></button>
+                    <button data-color="#f59e0b" class="color-preset-btn w-full aspect-square rounded-xl bg-amber-500 border-2 border-transparent flex items-center justify-center text-white"></button>
+                    <button data-color="#ec4899" class="color-preset-btn w-full aspect-square rounded-xl bg-pink-500 border-2 border-transparent flex items-center justify-center text-white"></button>
+                </div>
+            </div>
+
+            <!-- Font Selector -->
+            <div class="space-y-2">
+                <label for="input-font-select" class="block text-xs font-bold uppercase tracking-wider text-slate-500">Heading Typography</label>
+                <select id="input-font-select" class="w-full px-3 py-2 rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    <option value="'Outfit', sans-serif">Outfit (Modern Tech)</option>
+                    <option value="'Inter', sans-serif">Inter (Clean Neutral)</option>
+                    <option value="'Plus Jakarta Sans', sans-serif">Plus Jakarta Sans (Friendly)</option>
+                    <option value="'Playfair Display', serif">Playfair Display (Elegant Serif)</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Drawer Footer with Download CTA -->
+        <div class="p-6 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 space-y-3">
+            <button id="download-html-btn" class="w-full py-3.5 rounded-xl text-sm font-bold text-white dynamic-brand-bg hover:opacity-90 transition-all shadow-lg shadow-indigo-500/25 flex items-center justify-center gap-2">
+                <i class="fa-solid fa-download"></i>
+                <span>Download Ready HTML File</span>
+            </button>
+            <p class="text-[11px] text-center text-slate-400">Generates a self-contained single .html file with your live customizations saved.</p>
+        </div>
+    </div>
+
+    <!-- Contact Form Success Modal -->
+    <div id="success-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm">
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-8 max-w-sm w-full text-center space-y-4 shadow-2xl transform scale-95 transition-transform">
+            <div class="w-16 h-16 rounded-full bg-emerald-500/10 text-emerald-500 flex items-center justify-center mx-auto text-3xl">
+                <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <h3 class="text-2xl font-bold font-heading text-slate-900 dark:text-white">Message Sent!</h3>
+            <p class="text-sm text-slate-600 dark:text-slate-400">
+                Thank you for reaching out. We have received your message and will get back to you shortly.
+            </p>
+            <button id="close-modal-btn" class="w-full py-3 rounded-xl text-sm font-bold text-white bg-emerald-600 hover:bg-emerald-500 transition-colors">
+                Continue
+            </button>
+        </div>
+    </div>
+
+    <!-- Application Logic Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Set dynamic current copyright year
+            document.getElementById('copyright-year').textContent = new Date().getFullYear();
+
+            // Theme Switcher Logic
+            const themeToggleBtn = document.getElementById('theme-toggle');
+            const themeToggleMobileBtn = document.getElementById('theme-toggle-mobile');
+            const htmlElement = document.documentElement;
+
+            function toggleTheme() {
+                if (htmlElement.classList.contains('dark')) {
+                    htmlElement.classList.remove('dark');
+                    localStorage.setItem('aura_theme', 'light');
+                } else {
+                    htmlElement.classList.add('dark');
+                    localStorage.setItem('aura_theme', 'dark');
+                }
+            }
+
+            // Restore stored theme or default dark
+            const savedTheme = localStorage.getItem('aura_theme');
+            if (savedTheme === 'light') {
+                htmlElement.classList.remove('dark');
+            } else {
+                htmlElement.classList.add('dark');
+            }
+
+            themeToggleBtn?.addEventListener('click', toggleTheme);
+            themeToggleMobileBtn?.addEventListener('click', toggleTheme);
+
+            // Mobile Menu Drawer Toggle
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+
+            mobileMenuBtn?.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            mobileNavLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                });
+            });
+
+            // Smooth Scroll Active Link Observer
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('.nav-link');
+
+            window.addEventListener('scroll', () => {
+                let current = '';
+                const scrollPosition = window.scrollY + 200;
+
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.offsetHeight;
+                    if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === `#${current}`) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+
+            // Interactive Contact Form Validation
+            const contactForm = document.getElementById('contact-form');
+            const nameInput = document.getElementById('form-name');
+            const emailInput = document.getElementById('form-email');
+            const messageInput = document.getElementById('form-message');
+
+            const errName = document.getElementById('err-name');
+            const errEmail = document.getElementById('err-email');
+            const errMessage = document.getElementById('err-message');
+
+            const successModal = document.getElementById('success-modal');
+            const closeModalBtn = document.getElementById('close-modal-btn');
+
+            function validateEmail(email) {
+                return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+            }
+
+            contactForm?.addEventListener('submit', (e) => {
+                e.preventDefault();
+                let isValid = true;
+
+                // Validate Name
+                if (!nameInput.value.trim()) {
+                    errName.classList.remove('hidden');
+                    nameInput.classList.add('border-rose-500');
+                    isValid = false;
+                } else {
+                    errName.classList.add('hidden');
+                    nameInput.classList.remove('border-rose-500');
+                }
+
+                // Validate Email
+                if (!validateEmail(emailInput.value.trim())) {
+                    errEmail.classList.remove('hidden');
+                    emailInput.classList.add('border-rose-500');
+                    isValid = false;
+                } else {
+                    errEmail.classList.add('hidden');
+                    emailInput.classList.remove('border-rose-500');
+                }
+
+                // Validate Message
+                if (messageInput.value.trim().length < 10) {
+                    errMessage.classList.remove('hidden');
+                    messageInput.classList.add('border-rose-500');
+                    isValid = false;
+                } else {
+                    errMessage.classList.add('hidden');
+                    messageInput.classList.remove('border-rose-500');
+                }
+
+                if (isValid) {
+                    // Show success modal
+                    successModal.classList.remove('hidden');
+                    successModal.classList.add('flex');
+                    contactForm.reset();
+                }
+            });
+
+            closeModalBtn?.addEventListener('click', () => {
+                successModal.classList.add('hidden');
+                successModal.classList.remove('flex');
+            });
+
+            // Customizer Side Drawer Controls
+            const customizerDrawer = document.getElementById('customizer-drawer');
+            const openCustomizerBtn = document.getElementById('open-customizer-btn');
+            const openCustomizerBtnMobile = document.getElementById('open-customizer-btn-mobile');
+            const footerOpenCustomizerBtn = document.getElementById('footer-open-customizer');
+            const closeCustomizerBtn = document.getElementById('close-customizer-btn');
+
+            function openCustomizer() {
+                customizerDrawer.classList.remove('translate-x-full');
+            }
+
+            function closeCustomizer() {
+                customizerDrawer.classList.add('translate-x-full');
+            }
+
+            openCustomizerBtn?.addEventListener('click', openCustomizer);
+            openCustomizerBtnMobile?.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+                openCustomizer();
+            });
+            footerOpenCustomizerBtn?.addEventListener('click', openCustomizer);
+            closeCustomizerBtn?.addEventListener('click', closeCustomizer);
+
+            // Live Customizer Live Preview Updates
+            const inputBrandName = document.getElementById('input-brand-name');
+            const inputHeroTitle = document.getElementById('input-hero-title');
+            const inputHeroSubtitle = document.getElementById('input-hero-subtitle');
+            const inputFontSelect = document.getElementById('input-font-select');
+            const colorPresetBtns = document.querySelectorAll('.color-preset-btn');
+
+            const brandNameDisplay = document.getElementById('brand-name-display');
+            const footerBrandName = document.getElementById('footer-brand-name');
+            const heroTitleDisplay = document.getElementById('hero-title-display');
+            const heroSubtitleDisplay = document.getElementById('hero-subtitle-display');
+
+            inputBrandName?.addEventListener('input', (e) => {
+                const val = e.target.value || 'Aura';
+                if (brandNameDisplay) brandNameDisplay.textContent = val;
+                if (footerBrandName) footerBrandName.textContent = val;
+            });
+
+            inputHeroTitle?.addEventListener('input', (e) => {
+                if (heroTitleDisplay) {
+                    heroTitleDisplay.innerHTML = `${e.target.value || 'Build Stunning Websites'} <span class="gradient-text">Effortlessly</span>`;
+                }
+            });
+
+            inputHeroSubtitle?.addEventListener('input', (e) => {
+                if (heroSubtitleDisplay) heroSubtitleDisplay.textContent = e.target.value;
+            });
+
+            inputFontSelect?.addEventListener('change', (e) => {
+                document.documentElement.style.setProperty('--user-font-heading', e.target.value);
+            });
+
+            // Color preset handling
+            colorPresetBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const selectedColor = btn.getAttribute('data-color');
+                    document.documentElement.style.setProperty('--brand-primary', selectedColor);
+
+                    // Update UI checkmark on buttons
+                    colorPresetBtns.forEach(b => {
+                        b.innerHTML = '';
+                        b.classList.remove('border-white', 'ring-2');
+                    });
+                    btn.classList.add('border-white', 'ring-2');
+                    btn.innerHTML = '<i class="fa-solid fa-check text-xs"></i>';
+                });
+            });
+
+            // One-Click Single File HTML Export Tool
+            const downloadHtmlBtn = document.getElementById('download-html-btn');
+
+            downloadHtmlBtn?.addEventListener('click', () => {
+                // Temporarily ensure drawer is closed for exported markup clean state
+                closeCustomizer();
+
+                setTimeout(() => {
+                    // Clone document content
+                    const fullHtml = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+
+                    // Create Blob and Download link
+                    const blob = new Blob([fullHtml], { type: 'text/html;charset=utf-8' });
+                    const downloadUrl = URL.createObjectURL(blob);
+                    
+                    const tempAnchor = document.createElement('a');
+                    tempAnchor.href = downloadUrl;
+                    tempAnchor.download = 'my-custom-website.html';
+                    document.body.appendChild(tempAnchor);
+                    tempAnchor.click();
+                    document.body.removeChild(tempAnchor);
+                    URL.revokeObjectURL(downloadUrl);
+                }, 200);
+            });
+        });
+    </script>
+</body>
+</html>
